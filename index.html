@@ -25,8 +25,142 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section data-background-image="question.svg"><h1>What can</h1><h1>be done?</h1></section>
+				<section>
+					<section>
+						<h3>Introduction</h3>
+						<ul>
+							<li>
+								Why? <br/>helped me, maybe helps others
+							</li>
+							<li class="fragment fade-in">
+								For Who? <br/>Mostly Beginners
+							</li>
+							<li class="fragment fade-in">
+								What? <br/> C++ on Bare Metal & some CMake
+							</li>
+						</ul>
+					</section>
+
+					<section>
+						<h3>Disclaimer</h3>
+						<ul>
+							<li>Ideas are no army swiss knife</li>
+							<li class="fragment fade-in">specific solutions of my worklife</li>
+							<li class="fragment fade-in">therefore tools of this time & knowledge</li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<section>
+                        <h3>easy, obvious start</h3>
+                        <div class="fragment fade-in">optimize your variables & functions</div>
+                        <div class="fragment fade-in">easiest way? const!</div>
+					</section>
+					<section>
+                        <h3>Why const?</h3>
+                        <ul>
+                            <li class="fragment fade-in">
+                                Code more readable
+                            </li>
+                            <li class="fragment fade-in">
+                                helps compiler to optimize (smaller/ faster)
+                            </li>
+                            <li class="fragment fade-in">
+                                prevents bugs
+                            </li>
+                            <li class="fragment fade-in">
+                                feature exists since "forever" <br/>(no Excuse for not using it 😉)
+                            </li>
+                        </ul>
+					</section>
+					<section>
+                        <h3>more readable/less potential bugs</h3>
+                        <pre><code class="c++">void super_serious_function(const int & input_value) {
+// input_value++;  // can't be changed
+// [...] big magic happens here [...]
+std::cout << input_value;
+// [...] more unicorn code [...]
+}</code></pre>
+                        prevents modifying read only variables<br/>
+                        <a href="https://godbolt.org/z/t-NyGb">GODBOLT</a>
+					</section>
+                    <section>
+                        <h3>helping the compiler</h3>
+
+                        <pre><code class="c++">const std::array values = {1,2,3,4,5,6,7,8,9,10,12,13,14,15};
+
+int main() {
+    std::cout << values[4];
+    return 0;
+}</code></pre>
+                        Optimizer removes 60 bytes! (15 x 4 Bytes)<br/>
+                        <a href="https://godbolt.org/z/tA2E_-">GODBOLT</a><br/>
+                        Hint: std::array deduction since C++17
+                    </section>
+                    <section>
+                        <h3>More detailed Talks</h3>
+                        <ul>
+                            <li>
+                                <a href="https://youtu.be/n0Ak6xtVXno?t=2858">CppCon 2018: Kate Gregory <br/>- Simplicity: Not Just For Beginners</a> <br/>
+                                Highlight: Const all the things [47:38 - 51:22]
+                            </li>
+                            <li>
+                                <a href="https://youtu.be/zBkNBP00wJE?t=1616">CppCon 2016: Jason Turner <br/>- Rich Code for Tiny Computers: A Simple Commodore 64 Game in C++17</a> <br/>
+                                Highlight: "add const" [26:56 - 28:23]
+                            </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Better Optimization?</h3>
+                        <ul>
+                            <li class="fragment fade-in">
+                                constexpr!
+                            </li>
+                            <li class="fragment fade-in">
+                                Variable evaluation at compile <br/> IF POSSIBLE
+                            </li>
+                            <li class="fragment fade-in">
+                                since C++11 for variables and 1 line Functions
+                            </li>
+                            <li class="fragment fade-in">
+                                since C++14 for functions with more lines <br/>
+                                often possible to add "constexpr" to function
+                            </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>More detailed Talks</h3>
+                        <ul>
+                            <li>
+                                <a href="https://youtu.be/PJwd4JLYJJY">Ben Deane & Jason Turner <br/>- constexpr ALL the Things!</a>
+
+                            </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>One Step further?</h3>
+                        <ul>
+                            <li class="fragment fade-in">
+                                consteval!
+                            </li>
+                            <li class="fragment fade-in">
+                                Value MUST evaluate at compile
+                            </li>
+                            <li class="fragment fade-in">
+                                added in C++20
+                            </li>
+                            <li class="fragment fade-in">
+                                gives guarantees for our code
+                            </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Advise</h3>
+                        nothing &lt; const &lt; constexpr &lt; consteval
+                    </section>
+
+				</section>
 			</div>
 		</div>
 
