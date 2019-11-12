@@ -148,6 +148,9 @@ int main() {
                                 Value MUST evaluate at compile
                             </li>
                             <li class="fragment fade-in">
+                                only for functions!
+                            </li>
+                            <li class="fragment fade-in">
                                 added in C++20
                             </li>
                             <li class="fragment fade-in">
@@ -157,10 +160,97 @@ int main() {
                     </section>
                     <section>
                         <h3>Advise</h3>
+                        TODO nicer<br/>
                         nothing &lt; const &lt; constexpr &lt; consteval
                     </section>
 
 				</section>
+                <section>
+                    <section>
+                        <h3>Configurations</h3>
+                        <ul>
+                            <li class="fragment fade-in">Save Configurations in Files</li>
+                            <li class="fragment fade-in">One File for all or One File per Configuration?</li>
+                            <li class="fragment fade-in">it depends! <br/>For me:</li>
+                            <li class="fragment fade-in">One File for all: <br/>if Configurations are small</li>
+                            <li class="fragment fade-in">One File per Configuration: <br/>if Configurations are long </li>
+                        </ul>
+
+                    </section>
+                    <section>
+                        <h3>Example</h3>
+                        <pre><code class="c++">struct first {
+    constexpr static int device_ram_size = 1; };
+
+struct middle {
+    constexpr static int device_ram_size = 21; };
+
+struct last {
+    constexpr static int device_ram_size = 42; };
+
+int main() {
+    using this_config = last;
+    std::cout << this_config::device_ram_size ;
+    return 0;
+};</code></pre>
+                        <a href="https://godbolt.org/z/bXrPf3">GODBOLT</a>
+                    </section>
+                    <section>
+                        <h3>Where could it be used?</h3>
+                        <ul>
+                            <li class="fragment fade-in">
+                                Device-Address (I2C, IP[static or dynamic?])
+                            </li>
+                            <li class="fragment fade-in">
+                                Server-Address (Gateway? static IP?)
+                            </li>
+                            <li class="fragment fade-in">
+                                Devboard, Prototype, Final HW-Revision? (LED-Pins?)
+                            </li>
+                            <li class="fragment fade-in">
+                                Branding?
+                            </li>
+                            <li class="fragment fade-in">
+                                Watchdogtimer?
+                            </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Story of a Sensor</h3>
+                        <ul>
+                            <li>
+                                Connection
+                            </li>
+                            <li class="fragment fade-in">
+                                Different Hardware
+                            </li>
+                            <li class="fragment fade-in">
+                                Easy added User
+                            </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Example CMAKE</h3>
+                        <pre><code class="c++">SET( Environment_configs "first" "last" "middle")
+
+# for each device/config-version create own target
+foreach( current_Environment ${Environment_configs} )
+    # create this specific target
+    add_executable(Example_${current_Environment}.elf
+                    main.cpp)
+    # every target gets own definevalue
+    target_compile_definitions(Example_${current_Environment}.elf
+                    PUBLIC CONFIG_DEFINE=${current_Environment})
+endforeach()</code></pre>
+                    </section>
+                    <section>
+                        <h3>And why all this?</h3>
+                        <img width="100%" data-src="clion_corner.png" alt="Down arrow">
+                    </section>
+                </section>
+                <section>
+
+                </section>
 			</div>
 		</div>
 
