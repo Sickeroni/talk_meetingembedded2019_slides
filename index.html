@@ -11,7 +11,7 @@
 		<link rel="stylesheet" href="css/theme/black.css">
 
 		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/monokai.css">
+		<link rel="stylesheet" href="lib/css/zenburn.css">
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -61,7 +61,7 @@
                         <h3>Why const?</h3>
                         <ul>
                             <li class="fragment fade-in">
-                                Code more readable
+                                more readable Code
                             </li>
                             <li class="fragment fade-in">
                                 helps compiler to optimize (smaller/ faster)
@@ -118,7 +118,10 @@ int main() {
                                 constexpr!
                             </li>
                             <li class="fragment fade-in">
-                                Variable evaluation at compile <br/> IF POSSIBLE
+                                Variable evaluation at compiletime
+                            </li>
+                            <li class="fragment fade-in">
+                                Function evaluation at compiletime <br/> IF POSSIBLE
                             </li>
                             <li class="fragment fade-in">
                                 since C++11 for variables and 1 line Functions
@@ -145,23 +148,23 @@ int main() {
                                 consteval!
                             </li>
                             <li class="fragment fade-in">
-                                Value MUST evaluate at compile
+                                Function MUST evaluate at compile
                             </li>
                             <li class="fragment fade-in">
                                 only for functions!
                             </li>
                             <li class="fragment fade-in">
-                                added in C++20
+                                "added" in C++20
                             </li>
                             <li class="fragment fade-in">
                                 gives guarantees for our code
                             </li>
                         </ul>
                     </section>
-                    <section>
-                        <h3>Advise</h3>
-                        TODO nicer<br/>
-                        nothing &lt; const &lt; constexpr &lt; consteval
+                    <section data-background-image="constflow.svg">
+                        <h3>summary</h3>
+                           <br/>
+                        <br/><br/><br/><br/><br/>
                     </section>
 
 				</section>
@@ -170,31 +173,14 @@ int main() {
                         <h3>Configurations</h3>
                         <ul>
                             <li class="fragment fade-in">Save Configurations in Files</li>
-                            <li class="fragment fade-in">One File for all or One File per Configuration?</li>
-                            <li class="fragment fade-in">it depends! <br/>For me:</li>
+                            <li class="fragment fade-in">"One File for all" or "One File per Configuration"?</li>
+                            <li class="fragment fade-in">it depends! For me:</li>
                             <li class="fragment fade-in">One File for all: <br/>if Configurations are small</li>
                             <li class="fragment fade-in">One File per Configuration: <br/>if Configurations are long </li>
                         </ul>
 
                     </section>
-                    <section>
-                        <h3>Example</h3>
-                        <pre><code class="c++">struct first {
-    constexpr static int device_ram_size = 1; };
 
-struct middle {
-    constexpr static int device_ram_size = 21; };
-
-struct last {
-    constexpr static int device_ram_size = 42; };
-
-int main() {
-    using this_config = last;
-    std::cout << this_config::device_ram_size ;
-    return 0;
-};</code></pre>
-                        <a href="https://godbolt.org/z/bXrPf3">GODBOLT</a>
-                    </section>
                     <section>
                         <h3>Where could it be used?</h3>
                         <ul>
@@ -214,6 +200,35 @@ int main() {
                                 Watchdogtimer?
                             </li>
                         </ul>
+                    </section>
+
+                    <section>
+                        <h3>Example</h3>
+                        <pre><code class="c++">struct first {
+    constexpr static int device_ram_size = 1; };
+
+struct middle {
+    constexpr static int device_ram_size = 21; };
+
+struct last {
+    constexpr static int device_ram_size = 42; };
+
+int main() {
+    using this_config = last;
+    std::cout << this_config::device_ram_size ;
+    return 0;
+};</code></pre>
+                        <a href="https://godbolt.org/z/bXrPf3">GODBOLT</a>
+                    </section>
+
+                    <section>
+                        <h3>Example</h3>
+                        <pre><code class="c++">struct first {
+    using connection = GW_t; };
+
+struct last {
+    using connection = IP_t<192,168,0,8>; };</code></pre>
+                        <a href="https://godbolt.org/z/NK4KeB">GODBOLT</a>
                     </section>
                     <section>
                         <h3>Story of a Sensor</h3>
@@ -245,11 +260,373 @@ endforeach()</code></pre>
                     </section>
                     <section>
                         <h3>And why all this?</h3>
-                        <img width="100%" data-src="clion_corner.png" alt="Down arrow">
+                        <img width="80%" data-src="clion_corner.png" alt="Down arrow">
                     </section>
                 </section>
                 <section>
+                    <section>
+                        <h3>Policy Based Class Design</h3>
+                        <img width="50%" data-src="book.jpg">
+                    </section>
+                    <section>
+                        <h3>Policy Based Class Design</h3>
+                        <ul>
+                            <li class="fragment fade-in">
+                                Book from 2001 (18 years!)
+                            </li>
+                            <li class="fragment fade-in">
+                                Implementations of Behaviour/Values
+                            </li>
+                            <li class="fragment fade-in">
+                                changed C++ (std::container accept allocators!)
+                            </li>
+                            <li class="fragment fade-in">
+                                very good for combining behaviours!
+                            </li>
+                            <li class="fragment fade-in">
+                                combining through misusing of typesystem/templates (TMP!)
+                            </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Where useful?</h3>
+                        <ul>
+                            <li>
+                                reading ADC? write a function/helperclass!
+                            </li>
+                            <li class="fragment fade-in">
+                                What ADC? ADC 0, 1 or 2? (specific SFRs!)
+                            </li>
+                            <li class="fragment fade-in">
+                                how do we copy Data? Interruptroutine or DMA?
+                            </li>
+                            <li class="fragment fade-in">
+                                what resolution? Signed or unsigned?
+                            </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>and that without HW-Context 😱</h3>
+                        <ul>
+                            <li class="fragment fade-in">
+                                Do we even have 3 ADCs?
+                            </li>
+                            <li class="fragment fade-in">
+                                What type of ADC? SFRs can be different
+                            </li>
+                            <li class="fragment fade-in">
+                                you get it...
+                            </li>
+                            <li class="fragment fade-in">
+                                I forgot<br/>
+                                3 ADCs, 2 Copys, 3 Resolutions, 2 signed/unsigned, 3 ICs
+                                <br/>= 108 possibilities
+                            </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Why should we use policies?</h3>
+                        <ul>
+                            <li class="fragment fade-in">
+                                slogan: divide and conquer
+                            </li>
+                            <li class="fragment fade-in">
+                                simplifies complexity <br/>similar to playing with brickstones
+                            </li>
+                            <li class="fragment fade-in">
+                                better encapsulation of functions
+                            </li>
+                            <li class="fragment fade-in">
+                                generic programming = easier reusing
+                            </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>todays Talk?</h3>
+                        <ul>
+                            <li>
+                                Meeting Embedded 2019: Daniel Penning<br/>- Generic programming for the masses
+                            </li>
+                        </ul>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h1>lets close the circle!</h1>
+                    </section>
+                    <section>
+                        <h3>Why?</h3>
+                        <ul>
+                            <li>
+                                nice, but simple
+                            </li>
+                            <li class="fragment fade-in">
+                                we talked about ...
+                            </li>
+                            <li class="fragment fade-in">
+                                ... compiletime-evaluation
+                            </li>
+                            <li class="fragment fade-in">
+                                ... configurations, known at compiletime
+                            </li>
+                            <li class="fragment fade-in">
+                                ... compiletime-combination of Behaviour-implementation
+                            </li>
+                            <li class="fragment fade-in">
+                                Could we evaluate our complete Firmware at compiletime?
+                            </li>
+                            <li class="fragment fade-in">
+                                Could we do more?
+                            </li>
+                        </ul>
+                    </section>
+                    <section data-transition="slide-in fade-out">
+                        <h3>USB Descriptors</h3>
+                        <img width="100%" data-src="descri/01.svg" alt="Down arrow" style="background-color: rgba(255, 255, 255, 0.0); border:none; box-shadow:none;">
+                    </section>
 
+                    <section data-transition="fade-in fade-out">
+                        <h3>USB Descriptors</h3>
+                        <img width="100%" data-src="descri/02.svg" alt="Down arrow" style="background-color: rgba(255, 255, 255, 0.0); border:none; box-shadow:none;">
+                    </section>
+
+                    <section data-transition="fade-in fade-out">
+                        <h3>USB Descriptors</h3>
+                        <img width="100%" data-src="descri/03.svg" alt="Down arrow" style="background-color: rgba(255, 255, 255, 0.0); border:none; box-shadow:none;">
+                    </section>
+                    <section data-transition="fade-in fade-out">
+                        <h3>USB Descriptors</h3>
+                        <img width="100%" data-src="descri/04.svg" alt="Down arrow" style="background-color: rgba(255, 255, 255, 0.0); border:none; box-shadow:none;">
+                    </section>
+                    <section data-transition="fade-in fade-out">
+                        <h3>USB Descriptors</h3>
+                        <img width="100%" data-src="descri/05.svg" alt="Down arrow" style="background-color: rgba(255, 255, 255, 0.0); border:none; box-shadow:none;">
+                    </section>
+                    <section data-transition="fade-in fade-out">
+                        <h3>USB Descriptors</h3>
+                        <img width="100%" data-src="descri/06.svg" alt="Down arrow" style="background-color: rgba(255, 255, 255, 0.0); border:none; box-shadow:none;">
+                    </section>
+                    <section data-transition="fade-in fade-out">
+                        <h3>USB Descriptors</h3>
+                        <img width="100%" data-src="descri/07.svg" alt="Down arrow" style="background-color: rgba(255, 255, 255, 0.0); border:none; box-shadow:none;">
+                    </section>
+                    <section data-transition="fade-in fade-out">
+                        <h3>USB Descriptors</h3>
+                        <img width="100%" data-src="descri/08.svg" alt="Down arrow" style="background-color: rgba(255, 255, 255, 0.0); border:none; box-shadow:none;">
+                    </section>
+                    <section data-transition="fade-in fade-out">
+                        <h3>USB Descriptors</h3>
+                        <img width="100%" data-src="descri/09.svg" alt="Down arrow" style="background-color: rgba(255, 255, 255, 0.0); border:none; box-shadow:none;">
+                    </section>
+                    <section data-transition="fade-in slide-out">
+                        <h3>USB Descriptors</h3>
+                        <img width="100%" data-src="descri/10.svg" alt="Down arrow" style="background-color: rgba(255, 255, 255, 0.0); border:none; box-shadow:none;">
+                    </section>
+                    <section>
+                        <h2>really really bad....</h2>
+
+                        <pre><code class="c++" data-trim contenteditable>
+												0x09,   /* bLength: Configuation Descriptor size */
+												USB_DESC_TYPE_OTHER_SPEED_CONFIGURATION,
+												USB_CDC_CONFIG_DESC_SIZ,
+												0x00,
+												0x02,   /* bNumInterfaces: 2 interfaces */
+												0x01,   /* bConfigurationValue: */
+												0x04,   /* iConfiguration: */
+												0xC0,   /* bmAttributes: */
+												0x32,   /* MaxPower 100 mA */
+
+												/*Interface Descriptor */
+												0x09,   /* bLength: Interface Descriptor size */
+												USB_DESC_TYPE_INTERFACE,  /* bDescriptorType: Interface */
+												/* Interface descriptor type */
+												0x00,   /* bInterfaceNumber: Number of Interface */
+												0x00,   /* bAlternateSetting: Alternate setting */
+												0x01,   /* bNumEndpoints: One endpoints used */
+												0x02,   /* bInterfaceClass: Communication Interface Class */
+												0x02,   /* bInterfaceSubClass: Abstract Control Model */
+												0x01,   /* bInterfaceProtocol: Common AT commands */
+												0x00,   /* iInterface: */
+
+												/*Header Functional Descriptor*/
+												0x05,   /* bLength: Endpoint Descriptor size */
+												0x24,   /* bDescriptorType: CS_INTERFACE */
+												0x00,   /* bDescriptorSubtype: Header Func Desc */
+												0x10,   /* bcdCDC: spec release number */
+												0x01,
+
+												/*Call Management Functional Descriptor*/
+												0x05,   /* bFunctionLength */
+												0x24,   /* bDescriptorType: CS_INTERFACE */
+												0x01,   /* bDescriptorSubtype: Call Management Func Desc */
+												0x00,   /* bmCapabilities: D0+D1 */
+												0x01,   /* bDataInterface: 1 */
+
+												/*ACM Functional Descriptor*/
+												0x04,   /* bFunctionLength */
+												0x24,   /* bDescriptorType: CS_INTERFACE */
+												0x02,   /* bDescriptorSubtype: Abstract Control Management desc */
+												0x02,   /* bmCapabilities */
+
+												/*Union Functional Descriptor*/
+												0x05,   /* bFunctionLength */
+												0x24,   /* bDescriptorType: CS_INTERFACE */
+												0x06,   /* bDescriptorSubtype: Union func desc */
+												0x00,   /* bMasterInterface: Communication class interface */
+												0x01,   /* bSlaveInterface0: Data Class Interface */
+
+												/*Endpoint 2 Descriptor*/
+												0x07,                           /* bLength: Endpoint Descriptor size */
+												USB_DESC_TYPE_ENDPOINT      ,   /* bDescriptorType: Endpoint */
+												CDC_CMD_EP,                     /* bEndpointAddress */
+												0x03,                           /* bmAttributes: Interrupt */
+												LOBYTE(CDC_CMD_PACKET_SIZE),     /* wMaxPacketSize: */
+												HIBYTE(CDC_CMD_PACKET_SIZE),
+												0xFF,                           /* bInterval: */
+
+												/*---------------------------------------------------------------------------*/
+
+												/*Data class interface descriptor*/
+												0x09,   /* bLength: Endpoint Descriptor size */
+												USB_DESC_TYPE_INTERFACE,  /* bDescriptorType: */
+												0x01,   /* bInterfaceNumber: Number of Interface */
+												0x00,   /* bAlternateSetting: Alternate setting */
+												0x02,   /* bNumEndpoints: Two endpoints used */
+												0x0A,   /* bInterfaceClass: CDC */
+												0x00,   /* bInterfaceSubClass: */
+												0x00,   /* bInterfaceProtocol: */
+												0x00,   /* iInterface: */
+
+												/*Endpoint OUT Descriptor*/
+												0x07,   /* bLength: Endpoint Descriptor size */
+												USB_DESC_TYPE_ENDPOINT,      /* bDescriptorType: Endpoint */
+												CDC_OUT_EP,                        /* bEndpointAddress */
+												0x02,                              /* bmAttributes: Bulk */
+												0x40,                              /* wMaxPacketSize: */
+												0x00,
+												0x00,                              /* bInterval: ignore for Bulk transfer */
+
+												/*Endpoint IN Descriptor*/
+												0x07,   /* bLength: Endpoint Descriptor size */
+												USB_DESC_TYPE_ENDPOINT,     /* bDescriptorType: Endpoint */
+												CDC_IN_EP,                        /* bEndpointAddress */
+												0x02,                             /* bmAttributes: Bulk */
+												0x40,                             /* wMaxPacketSize: */
+												0x00,
+												0x00                              /* bInterval */
+											  };
+										</code></pre>
+
+                    </section>
+                    <section>
+                    <pre><code class="c++">namespace hw {
+	struct stm32f723k_hs {
+		static constexpr uint8_t usb_high = 02;
+		static constexpr uint8_t usb_low = 01;
+		static constexpr uint8_t maxpacketsize = 64;
+	};
+}</code></pre>
+                    <a href="https://godbolt.org/z/bGGCyN">source</a>
+                </section>
+
+                    <section>
+                        <h3>device based on HW</h3>
+
+                        <pre><code class="c++">enum descriptor_type_t : uint8_t {
+null = 0x00,
+device = 0x01,
+configuration = 0x02,
+string = 0x03,
+interface = 0x04,
+endpoint = 0x05
+};</code></pre>
+                        <a href="https://godbolt.org/z/bGGCyN">source</a>
+                    </section>
+
+                    <section>
+                        <h3>device based on HW</h3>
+
+                        <pre><code class="c++">template&lt;typename HW_t, int _Vendor_t = 0x4242, int _Product_t = 0x4242&gt;
+struct device_desc_t {
+	uint8_t size = sizeof(*this);
+	descriptor_type_t descriptor_type = device;
+	uint8_t usb_high = HW_t::usb_high;
+	uint8_t usb_low = HW_t::usb_low;
+	class_t uclass = class_t::class_by_interface;
+	subclass_t subclass = subclass_t::subclass_by_interface;
+	protocol_t protocol = protocol_t::bla;
+	uint8_t maxpacketsize = HW_t::maxpacketsize;
+</code></pre>
+                        <a href="https://godbolt.org/z/XRE1BG">source</a>
+                    </section>
+
+
+                    <section>
+                        <h3>But what if i want something more complex?</h3>
+                        <ul>
+                            <li class="fragment fade-in">
+                                external configfiles?
+                            </li>
+                            <li class="fragment fade-in">
+                                XML, JSON, INI?
+                            </li>
+                            <li class="fragment fade-in">
+                                why not?
+                            </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>file to array</h3>
+
+                        <pre><code class="c++">cat test.json
+{
+    "meetingembedded" : 2019
+}
+
+xxd -i test.json | \
+> sed 's/unsigned char/constexpr uint8_t/' |\
+> sed 's/unsigned int/constexpr size_t/'
+
+constexpr uint8_t test_json[] = {
+  0x7b, 0x0d, 0x0a, 0x20, 0x20, 0x20, 0x20, 0x22, 0x6d, 0x65, 0x65, 0x74,
+  0x69, 0x6e, 0x67, 0x65, 0x6d, 0x62, 0x65, 0x64, 0x64, 0x65, 0x64, 0x22,
+  0x20, 0x3a, 0x20, 0x32, 0x30, 0x31, 0x39, 0x0d, 0x0a, 0x7d
+};
+constexpr size_t test_json_len = 34;</code></pre>
+
+                    </section>
+                    <section>
+                        <h3>In other words</h3>
+                        <h3>We have & know (almost) everything at compiletime</h3>
+                        <h3>and can do almost everything </h3>
+                    </section>
+
+                </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <section>
+                    <h3>Paul Targosz</h3>
+                    <ul>
+                        <li>twitter.com/Sickeroni</li>
+                        <li>github.com/Sickeroni</li>
+                        <li>linkedin.com/in/paul-targosz</li>
+                        <li>xing.com/profile/Paul_Targosz</li>
+                        <li>paultargosz86@gmail.com</li>
+                    </ul>
                 </section>
 			</div>
 		</div>
@@ -261,6 +638,15 @@ endforeach()</code></pre>
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
+                width: 1280,
+                height: 600,
+
+                // Factor of the display size that should remain empty around the content
+                margin: 0.1,
+
+                // Bounds for smallest/largest possible scale to apply to content
+                minScale: 0.2,
+                maxScale: 5.5,
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
